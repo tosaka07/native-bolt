@@ -14,7 +14,7 @@
     "url": "git+ssh://git@github.com/tosaka07/native-bolt.git"
   },
   "author": "tosaka07",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/tosaka07/native-bolt/issues"
   },
