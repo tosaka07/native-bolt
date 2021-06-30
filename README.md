@@ -43,7 +43,6 @@ const deployOption: DeployCommandOption = {
   actionPrefix: 'deploy_ios',
   title: 'Deploy iOS',
   responseType: 'in_channel',
-  repo: repo,
   defaultBranch: 'develop',
   branches: branches,
   version: version,

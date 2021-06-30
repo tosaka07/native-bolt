@@ -3,10 +3,6 @@ export interface DeployCommandOption {
   actionPrefix: string;
   title: string;
   responseType: 'in_channel' | 'ephemeral';
-  repo: {
-    owner: string;
-    repo: string;
-  };
   defaultBranch: string;
   branches: () => Promise<string[]>;
   version: (branch: string) => Promise<{
