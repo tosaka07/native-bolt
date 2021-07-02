@@ -2,7 +2,9 @@
   "name": "native-bolt",
   "version": "1.0.1",
   "description": "A library for building simple distribution slack commands for native apps.",
-  "main": "index.js",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "files": ["lib"],
   "scripts": {
     "lint": "eslint --ext .js,.ts .",
     "format": "npm run format:prettier",
