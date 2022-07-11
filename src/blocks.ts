@@ -1,6 +1,5 @@
-// eslint-disable-next-line no-unused-vars
 import { KnownBlock, Button, RespondArguments } from '@slack/bolt';
-// eslint-disable-next-line no-unused-vars
+import { encode } from './coder';
 import { Branches, BuildParameters, BuildVersions, Versions } from './models';
 
 export const createHeaderBlock = (text: string): KnownBlock => {
@@ -95,7 +94,7 @@ export const createBranchSelectAction = (
             text: branches.default,
           },
           style: 'primary',
-          value: JSON.stringify({
+          value: encode({
             ...buildParameters,
             branch: branches.default,
           }),
@@ -115,7 +114,7 @@ export const createBranchSelectAction = (
                 text: branch,
                 emoji: true,
               },
-              value: JSON.stringify({ ...buildParameters, branch: branch }),
+              value: encode({ ...buildParameters, branch: branch }),
             };
           }),
           action_id: `${actionPrefix}_branch_select_static_select-action`,
@@ -147,7 +146,7 @@ export const createAppVersionSelectAction = (
             text: versions.current,
           },
           style: 'primary',
-          value: JSON.stringify({
+          value: encode({
             ...buildParameters,
             version: versions.current,
           }),
@@ -161,7 +160,7 @@ export const createAppVersionSelectAction = (
               emoji: true,
               text: v,
             },
-            value: JSON.stringify({ ...buildParameters, version: v }),
+            value: encode({ ...buildParameters, version: v }),
             action_id: `${actionPrefix}_version_select_${v}-action`,
           };
         }),
@@ -192,7 +191,7 @@ export const createBuildVersionSelectAction = (
             text: `${buildVersions.next}`,
           },
           style: 'primary',
-          value: JSON.stringify({
+          value: encode({
             ...buildParameters,
             buildVersion: buildVersions.next,
           }),
@@ -206,7 +205,7 @@ export const createBuildVersionSelectAction = (
               emoji: true,
               text: `${v}`,
             },
-            value: JSON.stringify({
+            value: encode({
               ...buildParameters,
               buildVersion: v,
             }),
@@ -239,7 +238,7 @@ export const createBuildConfirmAction = (
             text: 'Deploy',
           },
           style: 'primary',
-          value: JSON.stringify(buildBarameters),
+          value: encode(buildBarameters),
           action_id: `${actionPrefix}_build_confirm_ok-action`,
         },
         {

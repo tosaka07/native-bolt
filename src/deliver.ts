@@ -13,6 +13,7 @@ import {
 import { BuildParameters, BuildVersions, DeployCommandOption } from './models';
 import { SemVer, inc } from 'semver';
 import type { Logger } from './logger';
+import { decode } from './coder';
 
 const isNotNullOrUndefined = <T>(v?: T | null): v is T => null != v;
 const range = (start: number, end: number) => {
@@ -114,10 +115,10 @@ const useBranchSelectAction = (
         let buildParameters: BuildParameters;
         if (payload.type == 'button') {
           const action = payload as ButtonAction;
-          buildParameters = JSON.parse(action.value) as BuildParameters;
+          buildParameters = decode(action.value) as BuildParameters;
         } else if (payload.type == 'static_select') {
           const staticSelectAction = payload as StaticSelectAction;
-          buildParameters = JSON.parse(
+          buildParameters = decode(
             staticSelectAction.selected_option.value,
           ) as BuildParameters;
         } else {
@@ -175,7 +176,7 @@ const useAppVersionSelectAction = (
         let buildParameters: BuildParameters;
         if (payload.type == 'button') {
           const action = payload as ButtonAction;
-          buildParameters = JSON.parse(action.value) as BuildParameters;
+          buildParameters = decode(action.value) as BuildParameters;
         } else {
           await respond('Invalid Parameter :(');
           return;
@@ -226,10 +227,10 @@ const useBuildVersionSelectAction = (
         let buildParameters: BuildParameters;
         if (payload.type == 'button') {
           const action = payload as ButtonAction;
-          buildParameters = JSON.parse(action.value) as BuildParameters;
+          buildParameters = decode(action.value) as BuildParameters;
         } else if (payload.type == 'static_select') {
           const staticSelectAction = payload as StaticSelectAction;
-          buildParameters = JSON.parse(
+          buildParameters = decode(
             staticSelectAction.selected_option.value,
           ) as BuildParameters;
         } else {
@@ -269,7 +270,7 @@ const useBuildConfirmOKAction = (
     async ({ payload, body, ack, respond }) => {
       try {
         const action = payload as ButtonAction;
-        const buildParameters = JSON.parse(action.value) as BuildParameters;
+        const buildParameters = decode(action.value) as BuildParameters;
 
         const destination = option.destinations.filter(
           (d) => d.id == buildParameters.deployment.id,
