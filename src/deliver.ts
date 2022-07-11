@@ -12,7 +12,7 @@ import {
 // eslint-disable-next-line no-unused-vars
 import { BuildParameters, BuildVersions, DeployCommandOption } from './models';
 import { SemVer, inc } from 'semver';
-import { Logger } from './logger';
+import type { Logger } from './logger';
 
 const isNotNullOrUndefined = <T>(v?: T | null): v is T => null != v;
 const range = (start: number, end: number) => {
