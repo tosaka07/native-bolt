@@ -12,13 +12,18 @@ import {
 // eslint-disable-next-line no-unused-vars
 import { BuildParameters, BuildVersions, DeployCommandOption } from './models';
 import { SemVer, inc } from 'semver';
+import { Logger } from './logger';
 
 const isNotNullOrUndefined = <T>(v?: T | null): v is T => null != v;
 const range = (start: number, end: number) => {
   return [...Array(end - start + 1)].map((_, i) => start + i);
 };
 
-const useDeliverCommand = (app: App, option: DeployCommandOption) => {
+const useDeliverCommand = (
+  app: App,
+  option: DeployCommandOption,
+  logger?: Logger,
+) => {
   app.command(`${option.commandName}`, async ({ respond, ack }) => {
     await ack();
     try {
@@ -35,12 +40,16 @@ const useDeliverCommand = (app: App, option: DeployCommandOption) => {
         ],
       });
     } catch (error) {
-      console.error(error);
+      logger?.error(error);
     }
   });
 };
 
-const useDeploymentSelectAction = (app: App, option: DeployCommandOption) => {
+const useDeploymentSelectAction = (
+  app: App,
+  option: DeployCommandOption,
+  logger?: Logger,
+) => {
   app.action(
     RegExp(`^${option.actionPrefix}_deployment_select_.*-action$`),
     async ({ payload, ack, respond }) => {
@@ -86,13 +95,18 @@ const useDeploymentSelectAction = (app: App, option: DeployCommandOption) => {
           ],
         });
       } catch (error) {
+        logger?.error(error);
         await respond(createErrorResponse(error, option));
       }
     },
   );
 };
 
-const useBranchSelectAction = (app: App, option: DeployCommandOption) => {
+const useBranchSelectAction = (
+  app: App,
+  option: DeployCommandOption,
+  logger?: Logger,
+) => {
   app.action(
     RegExp(`^${option.actionPrefix}_branch_select_.+-action$`),
     async ({ payload, ack, respond }) => {
@@ -142,13 +156,18 @@ const useBranchSelectAction = (app: App, option: DeployCommandOption) => {
           ],
         });
       } catch (error) {
+        logger?.error(error);
         await respond(createErrorResponse(error, option));
       }
     },
   );
 };
 
-const useAppVersionSelectAction = (app: App, option: DeployCommandOption) => {
+const useAppVersionSelectAction = (
+  app: App,
+  option: DeployCommandOption,
+  logger?: Logger,
+) => {
   app.action(
     RegExp(`^${option.actionPrefix}_version_select_.+-action$`),
     async ({ payload, ack, respond }) => {
@@ -188,13 +207,18 @@ const useAppVersionSelectAction = (app: App, option: DeployCommandOption) => {
           ],
         });
       } catch (error) {
+        logger?.error(error);
         await respond(createErrorResponse(error, option));
       }
     },
   );
 };
 
-const useBuildVersionSelectAction = (app: App, option: DeployCommandOption) => {
+const useBuildVersionSelectAction = (
+  app: App,
+  option: DeployCommandOption,
+  logger?: Logger,
+) => {
   app.action(
     RegExp(`^${option.actionPrefix}_build_version_select_.+-action$`),
     async ({ payload, ack, respond }) => {
@@ -228,13 +252,18 @@ const useBuildVersionSelectAction = (app: App, option: DeployCommandOption) => {
           ],
         });
       } catch (error) {
+        logger?.error(error);
         await respond(createErrorResponse(error, option));
       }
     },
   );
 };
 
-const useBuildConfirmOKAction = (app: App, option: DeployCommandOption) => {
+const useBuildConfirmOKAction = (
+  app: App,
+  option: DeployCommandOption,
+  logger?: Logger,
+) => {
   app.action(
     `${option.actionPrefix}_build_confirm_ok-action`,
     async ({ payload, body, ack, respond }) => {
@@ -262,31 +291,44 @@ const useBuildConfirmOKAction = (app: App, option: DeployCommandOption) => {
           ],
         });
       } catch (error) {
+        logger?.error(error);
         await respond(createErrorResponse(error, option));
       }
     },
   );
 };
 
-const useBuildConfirmCancelAction = (app: App, option: DeployCommandOption) => {
+const useBuildConfirmCancelAction = (
+  app: App,
+  option: DeployCommandOption,
+  logger?: Logger,
+) => {
   app.action(
     `${option.actionPrefix}_build_confirm_cancel-action`,
     async ({ ack, respond }) => {
-      await ack();
-      await respond({
-        response_type: option.responseType,
-        text: `${option.title} Cancelled.`,
-      });
+      try {
+        await ack();
+        await respond({
+          response_type: option.responseType,
+          text: `${option.title} Cancelled.`,
+        });
+      } catch (error) {
+        logger?.error(error);
+      }
     },
   );
 };
 
-export const useDeliverEvents = (app: App, option: DeployCommandOption) => {
-  useDeliverCommand(app, option);
-  useDeploymentSelectAction(app, option);
-  useBranchSelectAction(app, option);
-  useAppVersionSelectAction(app, option);
-  useBuildVersionSelectAction(app, option);
-  useBuildConfirmOKAction(app, option);
-  useBuildConfirmCancelAction(app, option);
+export const useDeliverEvents = (
+  app: App,
+  option: DeployCommandOption,
+  logger?: Logger,
+) => {
+  useDeliverCommand(app, option, logger);
+  useDeploymentSelectAction(app, option, logger);
+  useBranchSelectAction(app, option, logger);
+  useAppVersionSelectAction(app, option, logger);
+  useBuildVersionSelectAction(app, option, logger);
+  useBuildConfirmOKAction(app, option, logger);
+  useBuildConfirmCancelAction(app, option, logger);
 };
