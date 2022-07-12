@@ -45,3 +45,13 @@ export interface BuildParameters {
   version?: string;
   buildVersion?: number;
 }
+
+export interface BuildParametersMap {
+  a: string;
+  b: string;
+  c?: string;
+  d?: number;
+  e?: string;
+  f?: string;
+  g?: number;
+}

@@ -115,12 +115,10 @@ const useBranchSelectAction = (
         let buildParameters: BuildParameters;
         if (payload.type == 'button') {
           const action = payload as ButtonAction;
-          buildParameters = decode(action.value) as BuildParameters;
+          buildParameters = decode(action.value);
         } else if (payload.type == 'static_select') {
           const staticSelectAction = payload as StaticSelectAction;
-          buildParameters = decode(
-            staticSelectAction.selected_option.value,
-          ) as BuildParameters;
+          buildParameters = decode(staticSelectAction.selected_option.value);
         } else {
           await respond('Invalid Parameter :(');
           return;
@@ -176,7 +174,7 @@ const useAppVersionSelectAction = (
         let buildParameters: BuildParameters;
         if (payload.type == 'button') {
           const action = payload as ButtonAction;
-          buildParameters = decode(action.value) as BuildParameters;
+          buildParameters = decode(action.value);
         } else {
           await respond('Invalid Parameter :(');
           return;
@@ -227,12 +225,10 @@ const useBuildVersionSelectAction = (
         let buildParameters: BuildParameters;
         if (payload.type == 'button') {
           const action = payload as ButtonAction;
-          buildParameters = decode(action.value) as BuildParameters;
+          buildParameters = decode(action.value);
         } else if (payload.type == 'static_select') {
           const staticSelectAction = payload as StaticSelectAction;
-          buildParameters = decode(
-            staticSelectAction.selected_option.value,
-          ) as BuildParameters;
+          buildParameters = decode(staticSelectAction.selected_option.value);
         } else {
           await respond('Invalid Parameter :(');
           return;
@@ -270,7 +266,7 @@ const useBuildConfirmOKAction = (
     async ({ payload, body, ack, respond }) => {
       try {
         const action = payload as ButtonAction;
-        const buildParameters = decode(action.value) as BuildParameters;
+        const buildParameters = decode(action.value);
 
         const destination = option.destinations.filter(
           (d) => d.id == buildParameters.deployment.id,
